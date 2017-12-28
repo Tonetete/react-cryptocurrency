@@ -15,7 +15,6 @@ class CoinList extends Component {
     api.getCoinValues().then(values => {
       this.cryptoCoinsInfo = values
       this.setState({ cryptoCoinsInfo: values })
-      console.log('cryptoCoins', this.cryptoCoinsInfo)
     })
   }
 
@@ -28,6 +27,15 @@ class CoinList extends Component {
   formatNumber (coinValue) {
     const parsedCoinValue = parseFloat(coinValue).toFixed(5)
     return parseFloat(parsedCoinValue).toLocaleString()
+  }
+
+  getValueWalletCryptoCurrency (price, quantity, id) {
+    if (id === 'cardano') {
+      quantity = 1532
+    } else if (id === 'tron') {
+      quantity = 4725
+    }
+    return parseFloat(parseFloat(price * quantity).toFixed(2)).toLocaleString()
   }
 
   render () {
@@ -44,8 +52,9 @@ class CoinList extends Component {
         <td className='col-md-2'>{this.formatNumber(coin[0]['24h_volume_usd'])}$</td>
         <td className='col-md-2'>{this.formatNumber(coin[0].available_supply)}$</td>
         <td className='col-md-2' style={{ color: coin[0].percent_change_24h < 0 ? 'red' : 'green' }}>{coin[0].percent_change_24h}%</td>
-        <td className='col-md-2'>{{ coin[0].price_usd * 1532 }}</td>
-        <td className='col-md-2'>{{ }}</td>
+        <td className='col-md-2'>{ coin[0].id === 'cardano' ? 1532 : 0.0 }</td>
+        <td className='col-md-2'>{this.getValueWalletCryptoCurrency(coin[0].price_usd, 0.0, coin[0].id) }$
+        ({this.getValueWalletCryptoCurrency(coin[0].price_eur, 0.0, coin[0].id)}€)</td>
       </tr>)
     })
 
