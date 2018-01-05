@@ -16,7 +16,7 @@ class App extends Component {
       <div className='App'>
         <h1>Welcome to {this.state.name}</h1>
         <CoinList />
-        <h3>Total benefit {this.props.totalBenefitUSD}$ ({this.props.totalBenefitEUR})€</h3>
+        <h3>Total benefit {this.props.totalBenefitUSD}$ ({this.props.totalBenefitEUR}€)</h3>
       </div>
     )
   }
