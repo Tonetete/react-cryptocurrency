@@ -3,7 +3,7 @@ const COINMARKETCAP_URL = 'https://api.coinmarketcap.com/v1/ticker/cryptoCoin/?c
 
 class API {
   constructor () {
-    this.cryptoCoinsNames = ['cardano', 'tron', 'bitcoin', 'litecoin', 'ethereum', 'iota']
+    this.cryptoCoinsNames = ['cardano', 'tron', 'bitcoin', 'litecoin', 'ethereum', 'experience-points']
   }
 
   getCoinValues () {
