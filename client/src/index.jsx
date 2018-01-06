@@ -1,28 +1,35 @@
 import { render } from 'react-dom'
 import { AppContainer } from 'react-hot-loader'
-import App from './App'
+// import App from './App'
 import './public/styles/bootstrap/css/bootstrap.min.css'
 import React from 'react'
 // import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
-// import { Router, browserHistory } from 'react-router'
+import { BrowserRouter as Router } from 'react-router-dom'
 import reduxThunk from 'redux-thunk'
-// import routes from './routes'
+import Cookies from 'js-cookie'
+import routes from './routes'
 import reducers from './reducers/index'
-// import { AUTH_USER } from './actions/types'
+import { AUTH_USER } from './actions/types'
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore)
 const store = createStoreWithMiddleware(reducers)
+
+const token = Cookies.get('token')
+
+if (token) {
+  // Update application state. User has token and is probably authenticated
+  store.dispatch({ type: AUTH_USER })
+}
 
 const root = document.getElementById('root')
 const load = () => render((
   <AppContainer>
     <Provider store={store}>
-      {/*
-        <Router history={browserHistory} routes={routes} />
-        */}
-      <App />
+      <Router>
+        {routes}
+      </Router>
     </Provider>
   </AppContainer>
 ), root)
