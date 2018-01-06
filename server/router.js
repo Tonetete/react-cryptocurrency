@@ -1,7 +1,9 @@
 const AuthenticationController = require('./controllers/authentication'),  
+      CoinsController = require('./controllers/coins')
       express = require('express'),
       passportService = require('./config/passport'),
       passport = require('passport');
+
 
 // Constants for role types
 const REQUIRE_ADMIN = "Admin",  
@@ -16,8 +18,9 @@ const requireLogin = passport.authenticate('local', { session: false });
 module.exports = function(app) {  
     // Initializing route groups
     const apiRoutes = express.Router(),
-          authRoutes = express.Router();
-  
+          authRoutes = express.Router(),
+          coinRoutes = express.Router();
+    
     //=========================
     // Auth Routes
     //=========================
@@ -30,6 +33,12 @@ module.exports = function(app) {
   
     // Login route
     authRoutes.post('/login', requireLogin, AuthenticationController.login);
+
+    // Set coin routes
+    apiRoutes.use('/coins', coinRoutes);
+
+    // Get user coins
+    coinRoutes.post('/getCoinsUser', CoinsController.getCoinsUser);
   
   // Set url for API group routes
     app.use('/api', apiRoutes);

@@ -5,7 +5,8 @@ const express = require('express'),
       logger = require('morgan'),
       mongoose = require('mongoose'),
       config = require('./config/main'),
-      router = require('./router');
+      router = require('./router'),
+      cookieParser = require('cookie-parser');
 
       // Database Connection
 mongoose.connect(config.database);  
@@ -19,7 +20,8 @@ app.use(logger('dev')); // Log requests to API using morgan
 app.use(bodyParser.urlencoded({ extended: false }));  
 // expose the object in req.body when we start building endpoints.
 app.use(bodyParser.json());  
-
+// Parse cookies
+app.use(cookieParser());
 // Enable CORS from client-side
 app.use(function(req, res, next) {  
   res.header("Access-Control-Allow-Origin", "*");
