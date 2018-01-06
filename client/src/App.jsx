@@ -1,3 +1,4 @@
+import axios from 'axios'
 import { Component } from 'react'
 import { connect } from 'react-redux'
 import CoinList from './components/CoinList/coin_list'
@@ -9,14 +10,21 @@ class App extends Component {
     this.state = {
       name: 'react-cryptocurrencies'
     }
+    axios.post('http://localhost:3000/api/coins/getCoinsUser', { })
   }
 
   render () {
+    let totalBenefit = null
+
+    if (this.props.totalBenefitUSD !== {}) {
+      totalBenefit = <h3>Total benefit {this.props.totalBenefitUSD}$ ({this.props.totalBenefitEUR}€)</h3>
+    }
+
     return (
       <div className='App'>
         <h1>Welcome to {this.state.name}</h1>
         <CoinList />
-        <h3>Total benefit {this.props.totalBenefitUSD}$ ({this.props.totalBenefitEUR}€)</h3>
+        {totalBenefit}
       </div>
     )
   }
