@@ -1,2 +1,13 @@
 node_modules/
+client/build/*
 yarn*
+
+client/build/
+
+client/src/public/styles/bootstrap/js/bootstrap\.js
+
+client/src/public/styles/bootstrap/js/bootstrap\.min\.js
+
+react-crypto\.code-workspace
+
+\.vscode/launch\.json
