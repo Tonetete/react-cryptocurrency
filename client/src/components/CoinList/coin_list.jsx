@@ -5,59 +5,31 @@ import API from '../../services/api'
 import { setTotalBenefit } from '../../actions/index'
 import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
+// import ReactInterval from 'react-interval'
 
 class CoinList extends Component {
   constructor (props) {
     super(props)
     this.state = { ...props }
-    this.getCoinsItems()
+    this.init()
   }
 
-  getCoinsItems () {
+  init () {
     const api = new API()
     api.getCoinValues().then(values => {
-      this.cryptoCoinsInfo = values
+      this.coins = this.buildListCoins(values)
       this.setState({ cryptoCoinsInfo: values })
+      this.props.setTotalBenefit({
+        totalBenefitEUR: this.coins.totalBenefitEUR,
+        totalBenefitUSD: this.coins.totalBenefitUSD
+      })
     })
   }
 
-  sortByRankCoins (arrayCoins) {
-    return arrayCoins.sort((coin1, coin2) => {
-      return parseInt(coin1[0].rank) > parseInt(coin2[0].rank)
-    })
-  }
-
-  formatNumber (coinValue) {
-    const parsedCoinValue = parseFloat(coinValue).toFixed(5)
-    return parseFloat(parsedCoinValue).toLocaleString()
-  }
-
-  getQuantityWalletCryptoCurrency (id) {
-    switch (id) {
-      case 'cardano':
-        return 1532
-      case 'tron':
-        return 4720
-      case 'experience-points':
-        return 32789
-      default:
-        return 0.0
-    }
-  }
-
-  getValueWalletCryptoCurrency (price, id) {
-    const quantity = this.getQuantityWalletCryptoCurrency(id)
-    return { quantity, value: parseFloat(parseFloat(price * quantity).toFixed(2)) }
-  }
-
-  render () {
-    if (!this.state.cryptoCoinsInfo) {
-      return <div>Loading...</div>
-    }
-
+  buildListCoins (coins) {
     let totalBenefitEUR = 0
     let totalBenefitUSD = 0
-    const listCoins = this.sortByRankCoins(this.state.cryptoCoinsInfo).map((coin) => {
+    const list = this.sortByRankCoins(coins).map((coin) => {
       const coinUSD = this.getValueWalletCryptoCurrency(coin[0].price_usd, coin[0].id)
       const coinEUR = this.getValueWalletCryptoCurrency(coin[0].price_eur, coin[0].id)
       totalBenefitEUR += coinEUR.value
@@ -71,48 +43,82 @@ class CoinList extends Component {
         <td className='col-md-2'>{this.formatNumber(coin[0]['24h_volume_usd'])}$</td>
         <td className='col-md-2'>{this.formatNumber(coin[0].available_supply)}$</td>
         <td className='col-md-2' style={{ color: coin[0].percent_change_24h < 0 ? 'red' : '#77ed77' }}>{coin[0].percent_change_24h}%</td>
-        <td className='col-md-2'>{ coinEUR.quantity }</td>
-        <td className='col-md-2'>{coinUSD.value.toLocaleString()}$ ({coinEUR.value.toLocaleString()}€)</td>
+        <td className='col-md-2'>{this.formatNumber(coinEUR.quantity)}</td>
+        <td className='col-md-2'>{this.formatNumber(coinUSD.value)}$ ({this.formatNumber(coinEUR.value)}€)</td>
       </tr>)
     })
-    this.props.setTotalBenefit({
-      totalBenefitEUR: totalBenefitEUR.toLocaleString(),
-      totalBenefitUSD: totalBenefitUSD.toLocaleString()
+    return {
+      list,
+      totalBenefitEUR: this.formatNumber(totalBenefitEUR),
+      totalBenefitUSD: this.formatNumber(totalBenefitUSD)
+    }
+  }
+
+  sortByRankCoins (arrayCoins) {
+    return arrayCoins.sort((coin1, coin2) => {
+      return parseInt(coin1[0].rank) > parseInt(coin2[0].rank)
     })
+  }
+
+  formatNumber (coinValue) {
+    const parsedCoinValue = parseFloat(coinValue)
+    const numZeros = parsedCoinValue !== 0 ? -Math.floor(Math.log(parsedCoinValue) / Math.log(10) + 1) : 0
+    return numZeros > 1 ? parseFloat(parsedCoinValue).toFixed(numZeros + 3).toLocaleString() : parsedCoinValue.toLocaleString()
+  }
+
+  getQuantityWalletCryptoCurrency (id) {
+    switch (id) {
+      case 'cardano':
+        return 1532
+      case 'tron':
+        return 4720
+      case 'experience-points':
+        return 32789
+      case 'paccoin':
+        return 421698
+      default:
+        return 0.0
+    }
+  }
+
+  getValueWalletCryptoCurrency (price, id) {
+    const quantity = this.getQuantityWalletCryptoCurrency(id)
+    const value = price * quantity
+    return { quantity, value: value }
+  }
+
+  render () {
+    if (!this.state.cryptoCoinsInfo) {
+      return <div>Loading...</div>
+    }
 
     return (
-      <Table responsive>
-        <thead>
-          <tr>
-            <th scope='col'>#</th>
-            <th scope='col'>Name</th>
-            <th scope='col'>Market Cap</th>
-            <th scope='col'>Price</th>
-            <th scope='col'>Volume (24h)</th>
-            <th scope='col'>Circulating Supply</th>
-            <th scope='col'>Change (24h)</th>
-            <th scope='col'>Quantity you own</th>
-            <th scope='col'>Value of your wallet</th>
-          </tr>
-        </thead>
-        <tbody>
-          {listCoins}
-        </tbody>
-      </Table>
+      <div>
+        {/* <ReactInterval timeout={80000} callback={this.init()} /> */}
+        <Table responsive>
+          <thead>
+            <tr>
+              <th scope='col'>#</th>
+              <th scope='col'>Name</th>
+              <th scope='col'>Market Cap</th>
+              <th scope='col'>Price</th>
+              <th scope='col'>Volume (24h)</th>
+              <th scope='col'>Circulating Supply</th>
+              <th scope='col'>Change (24h)</th>
+              <th scope='col'>Quantity you own</th>
+              <th scope='col'>Value of your wallet</th>
+            </tr>
+          </thead>
+          <tbody>
+            {this.coins.list}
+          </tbody>
+        </Table>
+      </div>
     )
   }
 }
 
-// function mapStateToProps(state) {
-//   return {
-//     totalBenefitUSD: state.totalBenefitUSD
-//     totalBenefitEUR: state.totalBenefitEUR
-//   };
-// }
-
 function mapDispatchToProps (dispatch) {
-  // Whenever selectBook is called, the result should be
-  // passed to all reducers
   return bindActionCreators({ setTotalBenefit: setTotalBenefit }, dispatch)
 }
 
