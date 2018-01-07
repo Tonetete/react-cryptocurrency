@@ -6,10 +6,11 @@ class API {
     this.cryptoCoinsNames = ['cardano', 'tron', 'bitcoin', 'litecoin', 'paccoin', 'ethereum', 'experience-points']
   }
 
-  getCoinValues () {
+  getCoinValues (listCoins) {
     let promises = []
-    this.cryptoCoinsNames.map((cryptoCoin) => {
-      const URL_COIN = COINMARKETCAP_URL.replace('cryptoCoin', cryptoCoin)
+    console.log('listCoins', listCoins)
+    listCoins.map((coin) => {
+      const URL_COIN = COINMARKETCAP_URL.replace('cryptoCoin', coin.name)
       promises.push(new Promise((resolve, reject) => {
         fetch(URL_COIN, { method: 'GET' }).then((response) => {
           response.json().then((respJSON) => {
