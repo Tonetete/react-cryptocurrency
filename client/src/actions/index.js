@@ -1,8 +1,10 @@
 
 import axios from 'axios'
+import API from '../services/api'
 import Cookies from 'js-cookie'
 import { AUTH_USER,
-  AUTH_ERROR } from './types'
+  AUTH_ERROR,
+  GET_COINS_USER } from './types'
 
 const API_URL = 'http://localhost:3000/api'
 const CLIENT_ROOT_URL = 'http://localhost:5000'
@@ -39,6 +41,25 @@ export function loginUser ({ email, password }) {
         Cookies.set('token', response.data.token, { expires: 1, path: '/' }) // expires after 1 day
         dispatch({ type: AUTH_USER })
         window.location.href = CLIENT_ROOT_URL + '/home'
+      })
+      .catch((error) => {
+        errorHandler(dispatch, error.response, AUTH_ERROR)
+      })
+  }
+}
+
+export function getCoinsUser () {
+  return function (dispatch) {
+    axios.post(`${API_URL}/coins/getCoinsUser`, { }, {
+      headers: { authorization: Cookies.get('token') }
+    })
+      .then(response => {
+        const api = new API()
+        console.log(response)
+        api.getCoinValues(response.data.coins).then(values => {
+          console.log('values', values)
+          dispatch({ type: GET_COINS_USER, payload: values })
+        })
       })
       .catch((error) => {
         errorHandler(dispatch, error.response, AUTH_ERROR)

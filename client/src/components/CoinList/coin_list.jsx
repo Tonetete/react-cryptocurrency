@@ -1,9 +1,9 @@
 
 import { Component } from 'react'
 import { Table } from 'react-bootstrap'
-import API from '../../services/api'
-import { setTotalBenefit } from '../../actions/index'
-import { bindActionCreators } from 'redux'
+// import API from '../../services/api'
+import { setTotalBenefit, getCoinsUser } from '../../actions/index'
+// import { bindActionCreators } from 'redux'
 import { connect } from 'react-redux'
 // import ReactInterval from 'react-interval'
 
@@ -11,19 +11,7 @@ class CoinList extends Component {
   constructor (props) {
     super(props)
     this.state = { ...props }
-    this.init()
-  }
-
-  init () {
-    const api = new API()
-    api.getCoinValues().then(values => {
-      this.coins = this.buildListCoins(values)
-      this.setState({ cryptoCoinsInfo: values })
-      this.props.setTotalBenefit({
-        totalBenefitEUR: this.coins.totalBenefitEUR,
-        totalBenefitUSD: this.coins.totalBenefitUSD
-      })
-    })
+    this.props.getCoinsUser()
   }
 
   buildListCoins (coins) {
