@@ -1,4 +1,3 @@
-import axios from 'axios'
 import { Component } from 'react'
 import { connect } from 'react-redux'
 import CoinList from './components/CoinList/coin_list'
@@ -10,7 +9,6 @@ class App extends Component {
     this.state = {
       name: 'react-cryptocurrencies'
     }
-    axios.post('http://localhost:3000/api/coins/getCoinsUser', { })
   }
 
   render () {
