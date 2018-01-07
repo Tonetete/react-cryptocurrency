@@ -7,7 +7,7 @@ const jwt = require('jsonwebtoken'),
 
 function generateToken(user) {  
   return jwt.sign(user, config.secret, {
-    expiresIn: 10080 // in seconds
+    expiresIn : '120m'
   });
 } 
 
@@ -28,9 +28,8 @@ function setUserInfo(request) {
 exports.login = function(req, res, next) {
 
     let userInfo = setUserInfo(req.user);
-  
     res.status(200).json({
-      token: 'JWT ' + generateToken(userInfo),
+      token: generateToken(userInfo),
       user: userInfo
     });
 }
