@@ -1,4 +1,5 @@
-const CoinsUser = require('../models/coinsUser');
+const User = require('../models/user'),
+      CoinsUser = require('../models/coinsUser');
 // import Cookies from 'js-cookie'
 
 // function checkTokenUser () {
@@ -12,7 +13,24 @@ const CoinsUser = require('../models/coinsUser');
 
 
 exports.getCoinsUser = (req, res, next) => {
-    // const email = req.body.email;
+    const user = req.decoded.email;
     // const password = 
-    console.log('req', req.cookies )
+    // res.status(200).json({ response: req.cookies });
+    User.findOne({ email: user }, (err, existingUser) => { 
+        if (err) {
+          return next(err);
+        } 
+        
+        if (existingUser) {
+            CoinsUser.findOne({ userId: existingUser._id }, (errCoinsUser, coinsUser) => {
+              if (errCoinsUser) {
+                return next(err);
+              }
+
+              if (coinsUser) {
+                return res.status(201).json({ coins: coinsUser.coins });
+              } 
+            })
+        }
+    });
 } 
