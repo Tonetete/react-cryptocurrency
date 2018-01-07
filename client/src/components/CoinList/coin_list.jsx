@@ -63,7 +63,7 @@ class CoinList extends Component {
       case 'experience-points':
         return 32789
       case 'paccoin':
-        return 421698
+        return 421698 + 3849742
       default:
         return 0.0
     }
@@ -75,11 +75,24 @@ class CoinList extends Component {
     return { quantity, value: value }
   }
 
+  componentWillUpdate () {
+    console.log('componentWillUpdate!', this.props.coinsUser)
+    if (this.props.coinsUser !== {}) {
+      console.log('state change!')
+      this.coins = this.buildListCoins(this.props.coinsUser)
+      console.log('this.coins', this.coins)
+      this.props.setTotalBenefit({
+        totalBenefitEUR: this.coins.totalBenefitEUR,
+        totalBenefitUSD: this.coins.totalBenefitUSD
+      })
+    }
+  }
+
   render () {
-    if (!this.state.cryptoCoinsInfo) {
+    if (!this.coins) {
       return <div>Loading...</div>
     }
-
+    console.log('lets render!', this.coins)
     return (
       <div>
         {/* <ReactInterval timeout={80000} callback={this.init()} /> */}
@@ -106,8 +119,10 @@ class CoinList extends Component {
   }
 }
 
-function mapDispatchToProps (dispatch) {
-  return bindActionCreators({ setTotalBenefit: setTotalBenefit }, dispatch)
+function mapStateToProps (state) {
+  console.log('state', state)
+  return {
+    coinsUser: state.coinsUser.coins
+  }
 }
-
-export default connect(null, mapDispatchToProps)(CoinList)
+export default connect(mapStateToProps, { setTotalBenefit, getCoinsUser })(CoinList)
