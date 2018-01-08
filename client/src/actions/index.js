@@ -1,10 +1,13 @@
 
 import axios from 'axios'
 import API from '../services/api'
+import { formatNumber } from '../functions/utils'
 import Cookies from 'js-cookie'
 import { AUTH_USER,
   AUTH_ERROR,
-  GET_COINS_USER } from './types'
+  GET_COINS_USER,
+  UNAUTH_USER,
+  SET_TOTAL_BENEFIT } from './types'
 
 const API_URL = 'http://localhost:3000/api'
 const CLIENT_ROOT_URL = 'http://localhost:5000'
