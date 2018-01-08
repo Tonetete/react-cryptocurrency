@@ -1,5 +1,5 @@
 import React from 'react'
-import { Route, Redirect } from 'react-router'
+import { Route } from 'react-router'
 
 import App from './App'
 // import NotFoundPage from './components/pages/not-found-page';
@@ -20,6 +20,5 @@ export default (
   <div>
     <Route path='/home' component={requireAuth(App)} />
     <Route path='/login' component={Login} />
-    <Redirect path='/' to='/home' />
   </div>
 )
