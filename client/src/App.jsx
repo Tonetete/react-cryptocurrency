@@ -1,6 +1,7 @@
 import { Component } from 'react'
 import { connect } from 'react-redux'
 import CoinList from './components/CoinList/coin_list'
+import { logoutUser } from './actions/index'
 import './App.css'
 
 class App extends Component {
@@ -23,6 +24,7 @@ class App extends Component {
         <h1>Welcome to {this.state.name}</h1>
         <CoinList />
         {totalBenefit}
+        <a onClick={() => this.props.logoutUser()}>Logout User</a>
       </div>
     )
   }
@@ -35,4 +37,4 @@ function mapStateToProps (state) {
   }
 }
 
-export default connect(mapStateToProps)(App)
+export default connect(mapStateToProps, { logoutUser })(App)

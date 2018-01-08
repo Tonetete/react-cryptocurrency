@@ -28,7 +28,8 @@ export function errorHandler (dispatch, error, type) {
       type: type,
       payload: 'You are not authorized to do this. Please login and try again.'
     })
-    logoutUser(dispatch)
+    const logout = logoutUser()
+    logout(dispatch)
   } else {
     dispatch({
       type: type,
@@ -37,10 +38,12 @@ export function errorHandler (dispatch, error, type) {
   }
 }
 
-export function logoutUser (dispatch) {
-  dispatch({ type: UNAUTH_USER })
-  Cookies.remove('token', { path: '/' })
-  window.location.href = CLIENT_ROOT_URL + '/login'
+export function logoutUser () {
+  return function (dispatch) {
+    dispatch({ type: UNAUTH_USER })
+    Cookies.remove('token', { path: '/' })
+    window.location.href = CLIENT_ROOT_URL + '/login'
+  }
 }
 
 export function loginUser ({ email, password }) {
