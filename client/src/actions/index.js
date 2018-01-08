@@ -55,10 +55,34 @@ export function getCoinsUser () {
     })
       .then(response => {
         const api = new API()
-        console.log(response)
         api.getCoinValues(response.data.coins).then(values => {
-          console.log('values', values)
-          dispatch({ type: GET_COINS_USER, payload: values })
+          let totalBenefitEUR = 0
+          let totalBenefitUSD = 0
+          let listCoins = values.map((coin) => {
+            const coinUser = response.data.coins.filter((c) => c.name === coin[0].id)
+            totalBenefitEUR += coinUser[0].quantity * coin[0].price_eur
+            totalBenefitUSD += coinUser[0].quantity * coin[0].price_usd
+            return {
+              id: coin[0].id,
+              rank: coin[0].rank,
+              name: coin[0].name,
+              symbol: coin[0].symbol,
+              market_cap_usd: formatNumber(coin[0].market_cap_usd),
+              price_usd: formatNumber(coin[0].price_usd),
+              price_eur: formatNumber(coin[0].price_eur),
+              '24h_volume_usd': formatNumber(coin[0]['24h_volume_usd']),
+              percent_change_24h: coin[0].percent_change_24h,
+              available_supply: formatNumber(coin[0].available_supply),
+              quantity: coinUser[0].quantity,
+              usdValue: formatNumber(coinUser[0].quantity * coin[0].price_usd),
+              eurValue: formatNumber(coinUser[0].quantity * coin[0].price_eur)
+            }
+          })
+          dispatch({ type: GET_COINS_USER, payload: listCoins })
+          setTotalBenefit({
+            totalBenefitEUR: formatNumber(totalBenefitEUR),
+            totalBenefitUSD: formatNumber(totalBenefitUSD)
+          }, dispatch)
         })
       })
       .catch((error) => {
@@ -67,11 +91,11 @@ export function getCoinsUser () {
   }
 }
 
-export function setTotalBenefit (totalBenefit) {
+export function setTotalBenefit (totalBenefit, dispatch) {
   // selectBook is an ActionCreator, it needs to return an action,
   // an object with a type property.
-  return {
-    type: 'SET_TOTAL_BENEFIT',
+  dispatch({
+    type: SET_TOTAL_BENEFIT,
     payload: totalBenefit
-  }
+  })
 }
