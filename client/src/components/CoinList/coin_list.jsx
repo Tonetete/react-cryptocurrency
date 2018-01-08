@@ -1,7 +1,7 @@
 
 import { Component } from 'react'
 import { Table } from 'react-bootstrap'
-import { setTotalBenefit, getCoinsUser } from '../../actions/index'
+import { getCoinsUser } from '../../actions/index'
 import { sortByRankCoins } from '../../functions/utils'
 import { connect } from 'react-redux'
 // import ReactInterval from 'react-interval'
@@ -68,4 +68,4 @@ function mapStateToProps (state) {
     coinsUser: state.coinsUser.coins
   }
 }
-export default connect(mapStateToProps, { setTotalBenefit, getCoinsUser })(CoinList)
+export default connect(mapStateToProps, { getCoinsUser })(CoinList)
