@@ -8,7 +8,6 @@ class API {
 
   getCoinValues (listCoins) {
     let promises = []
-    console.log('listCoins', listCoins)
     listCoins.map((coin) => {
       const URL_COIN = COINMARKETCAP_URL.replace('cryptoCoin', coin.name)
       promises.push(new Promise((resolve, reject) => {

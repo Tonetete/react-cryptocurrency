@@ -89,7 +89,7 @@ exports.login = function(req, res, next) {
           });
 
           res.status(201).json({
-            token: 'JWT ' + generateToken(userInfo),
+            token: generateToken(userInfo),
             user: userInfo
           });
         });
