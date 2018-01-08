@@ -23,18 +23,24 @@ export function errorHandler (dispatch, error, type) {
     errorMessage = error
   }
 
-  if (error.status === 401) {
+  if (error.status === 401 || error.status === 403) {
     dispatch({
       type: type,
       payload: 'You are not authorized to do this. Please login and try again.'
     })
-    // logoutUser()
+    logoutUser(dispatch)
   } else {
     dispatch({
       type: type,
       payload: errorMessage
     })
   }
+}
+
+export function logoutUser (dispatch) {
+  dispatch({ type: UNAUTH_USER })
+  Cookies.remove('token', { path: '/' })
+  window.location.href = CLIENT_ROOT_URL + '/login'
 }
 
 export function loginUser ({ email, password }) {
