@@ -28,6 +28,7 @@
     "redux": "^3.7.2",
     "redux-form": "^6.8.0",
     "redux-thunk": "^2.2.0",
+    "semantic-ui-react": "^0.77.1",
     "transform-runtime": "0.0.0"
   },
   "devDependencies": {
