@@ -68,4 +68,6 @@ module.exports = function(app) {
   
   // Set url for API group routes
     app.use('/api', apiRoutes);
+
+    // app.use('/', verifyToken)
 };

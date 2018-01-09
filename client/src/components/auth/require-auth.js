@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import PropTypes from 'prop-types'
 import { connect } from 'react-redux'
+import { checkServerStatus } from '../../actions/index'
 
 export default function (ComposedComponent) {
   class Authentication extends Component {
@@ -8,14 +9,20 @@ export default function (ComposedComponent) {
           router: PropTypes.object
         }
 
+        constructor (props) {
+          super(props)
+          this.state = { ...props }
+          this.props.checkServerStatus()
+        }
+
         componentWillMount () {
-          if (!this.props.authenticated) {
+          if (!this.props.authenticated || !this.props.serverStatus) {
             this.context.router.history.push('/login')
           }
         }
 
         componentWillUpdate (nextProps) {
-          if (!nextProps.authenticated) {
+          if (!nextProps.authenticated || !nextProps.serverStatus) {
             this.context.router.history.push('/login')
           }
         }
@@ -26,8 +33,11 @@ export default function (ComposedComponent) {
   }
 
   function mapStateToProps (state) {
-    return { authenticated: state.auth.authenticated }
+    return {
+      authenticated: state.auth.authenticated,
+      serverStatus: state.auth.serverStatus
+    }
   }
 
-  return connect(mapStateToProps)(Authentication)
+  return connect(mapStateToProps, { checkServerStatus })(Authentication)
 }
