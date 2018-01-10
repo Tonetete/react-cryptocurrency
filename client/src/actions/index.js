@@ -7,11 +7,8 @@ import { AUTH_USER,
   AUTH_ERROR,
   GET_COINS_USER,
   UNAUTH_USER,
-  SET_TOTAL_BENEFIT,
-  SERVER_ERROR,
-  OK } from './types'
+  SET_TOTAL_BENEFIT } from './types'
 
-const SERVER_URL = 'http://localhost:3000/'
 const API_URL = 'http://localhost:3000/api'
 const CLIENT_ROOT_URL = 'http://localhost:5000'
 
@@ -46,18 +43,6 @@ export function logoutUser () {
     dispatch({ type: UNAUTH_USER })
     Cookies.remove('token', { path: '/' })
     window.location.href = CLIENT_ROOT_URL + '/login'
-  }
-}
-
-export function checkServerStatus () {
-  return function (dispatch) {
-    axios.get(SERVER_URL)
-      .then(response => {
-        dispatch({ type: OK })
-      })
-      .catch(error => {
-        errorHandler(dispatch, error.response, SERVER_ERROR)
-      })
   }
 }
 
