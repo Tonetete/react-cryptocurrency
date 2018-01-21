@@ -1,11 +1,11 @@
 import React, { Component } from 'react'
-import { Button, Header, Form, Modal, Message } from 'semantic-ui-react'
-import { reduxForm } from 'redux-form'
+import { Button, Form, Modal } from 'semantic-ui-react'
+import { reduxForm, Field, SubmissionError } from 'redux-form'
 import { connect } from 'react-redux'
+import { Input } from 'semantic-ui-redux-form-fields'
 
 const form = reduxForm({
-  form: 'register',
-  validate
+  form: 'register'
 })
 
 // const renderField = field => (
@@ -15,30 +15,12 @@ const form = reduxForm({
 //   </div>
 // )
 
-function validate (formProps) {
-  const errors = {}
-
-  if (!formProps.firstName) {
-    errors.firstName = 'Please enter a first name'
-  }
-
-  if (!formProps.lastName) {
-    errors.lastName = 'Please enter a last name'
-  }
-
-  if (!formProps.email) {
-    errors.email = 'Please enter a email/user'
-  }
-
-  if (!formProps.password) {
-    errors.password = 'Please enter a password'
-  }
-  return errors
-}
-
 class Register extends Component {
   constructor (props) {
     super(props)
+    this.state = {
+      errors: {}
+    }
     this.buttonRegister = props.buttonRegister
   }
 
@@ -56,27 +38,78 @@ class Register extends Component {
     }
   }
 
+  validate (formProps) {
+    console.log('formProps', formProps)
+    const errors = {}
+
+    if (!formProps.firstName) {
+      errors.firstName = 'Name not supplied'
+    }
+
+    if (!formProps.lastName) {
+      errors.lastName = 'Last Name not supplied'
+    }
+
+    if (!formProps.email) {
+      errors.email = 'Email not supplied'
+    }
+
+    if (!formProps.password) {
+      errors.password = 'Password not supplied'
+    }
+
+    if (Object.keys(errors).length > 0) {
+      throw new SubmissionError({
+        ...errors
+      })
+    }
+  }
+
   render () {
     // const { handleSubmit } = this.props
+    const { handleSubmit, currentValue, pristine, submitting } = this.props
 
     return (
       <div>
         <Modal trigger={this.props.buttonRegister}>
-          <Modal.Header>Select a Photo</Modal.Header>
+          <Modal.Header>Register User</Modal.Header>
           <Modal.Content>
-            <Modal.Description>
-              <Header>Default Profile Image</Header>
-              <p>We've found the following gravatar image associated with your e-mail address.</p>
-              <p>Is it okay to use this photo?</p>
-            </Modal.Description>
-            <Form error>
-              <Form.Input label='Email' placeholder='joe@schmoe.com' />
-              <Message
-                error
-                header='Action Forbidden'
-                content='You can only sign up for an account once with a given e-mail address.'
+            <Form onSubmit={handleSubmit(this.validate)}>
+              <Field
+                component={Input}
+                currentValue={currentValue}
+                name='email'
+                placeholder='Insert email here'
+                topLabel='Email'
               />
-              <Button>Submit</Button>
+              <Field
+                component={Input}
+                currentValue={currentValue}
+                name='firstName'
+                placeholder='Insert first name here'
+                topLabel='First Name'
+              />
+              <Field
+                component={Input}
+                currentValue={currentValue}
+                name='lastName'
+                placeholder='Insert last name name here'
+                topLabel='Last Name'
+              />
+              <Field
+                component={Input}
+                currentValue={currentValue}
+                name='password'
+                placeholder='Insert password here'
+                topLabel='Password'
+              />
+              {/* <Message
+                visible={error}
+                error
+                header='Error'
+                content={error}
+              /> */}
+              <Button type='submit' disabled={pristine || submitting}>Submit</Button>
             </Form>
           </Modal.Content>
         </Modal>
