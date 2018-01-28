@@ -97,10 +97,11 @@ class Register extends Component {
         <Modal trigger={this.props.buttonRegister}>
           <Modal.Header>Register User</Modal.Header>
           <Modal.Content>
-            <Form onSubmit={handleSubmit(this.validate)}>
+            <Form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
               <Field
-                component={Input}
+                component={renderField}
                 currentValue={currentValue}
+                type='email'
                 name='email'
                 placeholder='Insert email here'
                 topLabel='Email'
@@ -120,18 +121,13 @@ class Register extends Component {
                 topLabel='Last Name'
               />
               <Field
-                component={Input}
-                currentValue={currentValue}
+                component={renderField}
+                type='password'
+                required='true'
                 name='password'
+                label='password'
                 placeholder='Insert password here'
-                topLabel='Password'
               />
-              {/* <Message
-                visible={error}
-                error
-                header='Error'
-                content={error}
-              /> */}
               <Button type='submit' disabled={pristine || submitting}>Submit</Button>
             </Form>
           </Modal.Content>
