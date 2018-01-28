@@ -27,7 +27,9 @@
     "react-router-dom": "^4.2.2",
     "redux": "^3.7.2",
     "redux-form": "^6.8.0",
+    "redux-observable": "^0.17.0",
     "redux-thunk": "^2.2.0",
+    "rxjs": "^5.5.6",
     "semantic-ui-css": "^2.2.12",
     "semantic-ui-react": "^0.77.1",
     "semantic-ui-redux-form-fields": "^1.0.1",
@@ -37,7 +39,8 @@
     "@neutrinojs/jest": "^8.0.14",
     "@neutrinojs/react": "^8.0.14",
     "@neutrinojs/standardjs": "^8.0.14",
-    "neutrino": "^8.0.14"
+    "neutrino": "^8.0.14",
+    "redux-devtools-extension": "^2.13.2"
   },
   "standard": {
     "ignore": [
