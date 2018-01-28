@@ -3,10 +3,15 @@ import axios from 'axios'
 import API from '../services/api'
 import { formatNumber } from '../functions/utils'
 import Cookies from 'js-cookie'
+import { Observable } from 'rxjs/Observable'
+import 'rxjs/add/observable/fromPromise'
 import { AUTH_USER,
   AUTH_ERROR,
   GET_COINS_USER,
   UNAUTH_USER,
+  REGISTER_USER_REQUEST,
+  REGISTER_USER_SUCCESS,
+  REGISTER_USER_FAIL,
   SET_TOTAL_BENEFIT } from './types'
 
 const API_URL = 'http://localhost:3000/api'
@@ -57,6 +62,34 @@ export function loginUser ({ email, password }) {
       .catch((error) => {
         errorHandler(dispatch, error.response, AUTH_ERROR)
       })
+  }
+}
+
+export function registerUserRequest ({ email, password, firstName, lastName }) {
+  console.log('submit form')
+  return {
+    type: REGISTER_USER_REQUEST,
+    payload: { email, password, firstName, lastName }
+  }
+}
+
+export function registerUser$ ({ email, password, firstName, lastName }) {
+  return Observable
+    .fromPromise(axios.post(`${API_URL}/auth/register`, { email, password, firstName, lastName }))
+    .catch(error => Observable.of(`Error: ${error}`))
+}
+
+export function registerUserSuccess (user) {
+  return {
+    type: REGISTER_USER_SUCCESS,
+    payload: user
+  }
+}
+
+export function registerUserFail (error) {
+  return {
+    type: REGISTER_USER_FAIL,
+    error
   }
 }
 
