@@ -1,10 +1,9 @@
 import { render } from 'react-dom'
 import { AppContainer } from 'react-hot-loader'
-// import App from './App'
-// import './public/styles/bootstrap/css/bootstrap.min.css'
 import 'semantic-ui-css/semantic.min.css'
+import { composeWithDevTools } from 'redux-devtools-extension'
+import { createEpicMiddleware } from 'redux-observable'
 import React from 'react'
-// import ReactDOM from 'react-dom'
 import { Provider } from 'react-redux'
 import { createStore, applyMiddleware } from 'redux'
 import { BrowserRouter as Router } from 'react-router-dom'
@@ -13,9 +12,11 @@ import Cookies from 'js-cookie'
 import routes from './routes'
 import reducers from './reducers/index'
 import { AUTH_USER } from './actions/types'
+import { rootEpic } from './epics'
 
-const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore)
-const store = createStoreWithMiddleware(reducers)
+const store = createStore(reducers, composeWithDevTools(
+  applyMiddleware(reduxThunk, createEpicMiddleware(rootEpic))
+))
 
 const token = Cookies.get('token')
 
