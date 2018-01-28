@@ -1,11 +1,14 @@
 import React, { Component } from 'react'
-import { Button, Form, Modal } from 'semantic-ui-react'
-import { reduxForm, Field, SubmissionError } from 'redux-form'
+import { Button, Form, Modal, Message } from 'semantic-ui-react'
+import { reduxForm, Field } from 'redux-form'
 import { connect } from 'react-redux'
 import { Input } from 'semantic-ui-redux-form-fields'
+import { registerUserRequest } from '../../actions'
 
 const form = reduxForm({
-  form: 'register'
+  form: 'register',
+  validate,
+  touchOnBlur: false
 })
 
 // const renderField = field => (
@@ -25,7 +28,7 @@ class Register extends Component {
   }
 
   handleFormSubmit (formProps) {
-    this.props.registerUser(formProps)
+    this.props.registerUserRequest(formProps)
   }
 
   renderAlert () {
@@ -150,4 +153,10 @@ function mapStateToProps (state) {
   }
 }
 
-export default connect(mapStateToProps)(form(Register))
+// function mapDispatchToProps () {
+//   return {
+//     registerUserRequest
+//   }
+// }
+
+export default connect(mapStateToProps, { registerUserRequest })(form(Register))
