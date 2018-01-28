@@ -18,6 +18,48 @@ const form = reduxForm({
 //   </div>
 // )
 
+function validate (formProps) {
+  console.log('formProps', formProps)
+  const errors = {}
+
+  if (!formProps.firstName) {
+    errors.firstName = 'Name not supplied'
+  }
+
+  if (!formProps.lastName) {
+    errors.lastName = 'Last Name not supplied'
+  }
+
+  if (!formProps.email) {
+    errors.email = 'Email not supplied'
+  }
+
+  if (!formProps.password) {
+    errors.password = 'Password not supplied'
+  }
+
+  // if (Object.keys(errors).length > 0) {
+  //   throw new SubmissionError({
+  //     ...errors
+  //   })
+  // }
+  return errors
+}
+
+const renderField = ({ input, label, type, meta: { touched, error } }) => (
+  <div>
+    <label>{label}</label>
+    <div>
+      <input {...input} placeholder={label} type={type} />
+      {touched && error &&
+      <Message negative>
+        <Message.Header>Error</Message.Header>
+        <p>{error}</p>
+      </Message>}
+    </div>
+  </div>
+)
+
 class Register extends Component {
   constructor (props) {
     super(props)
@@ -41,35 +83,13 @@ class Register extends Component {
     }
   }
 
-  validate (formProps) {
-    console.log('formProps', formProps)
-    const errors = {}
-
-    if (!formProps.firstName) {
-      errors.firstName = 'Name not supplied'
-    }
-
-    if (!formProps.lastName) {
-      errors.lastName = 'Last Name not supplied'
-    }
-
-    if (!formProps.email) {
-      errors.email = 'Email not supplied'
-    }
-
-    if (!formProps.password) {
-      errors.password = 'Password not supplied'
-    }
-
-    if (Object.keys(errors).length > 0) {
-      throw new SubmissionError({
-        ...errors
-      })
-    }
-  }
+  // renderFieldPassword = ({fields}) => (
+  //   <div>
+  //     <input type="number" {...fields} step="0.1" />
+  //   </div>
+  // )
 
   render () {
-    // const { handleSubmit } = this.props
     const { handleSubmit, currentValue, pristine, submitting } = this.props
 
     return (
