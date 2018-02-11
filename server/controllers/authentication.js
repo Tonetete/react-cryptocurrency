@@ -78,9 +78,10 @@ exports.login = function(req, res, next) {
         user.save(function(err, user) {
           if (err) { return next(err); }
     
-          // Respond with JWT if user was created
-  
           let userInfo = setUserInfo(user);
+          
+          // When user is created, so create his coins table
+
           let coinsUser = new CoinsUser({
             userId: user._id
           });
@@ -104,7 +105,6 @@ exports.login = function(req, res, next) {
 exports.roleAuthorization = function(role) {  
     return function(req, res, next) {
       const user = req.user;
-  
       User.findById(user._id, function(err, foundUser) {
         if (err) {
           res.status(422).json({ error: 'No user was found.' });
