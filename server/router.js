@@ -1,4 +1,4 @@
-const AuthenticationController = require('./controllers/authentication'),  
+const AuthenticationController = require('./controllers/authentication'),
       CoinsController = require('./controllers/coins')
       express = require('express'),
       passportService = require('./config/passport'),
@@ -10,19 +10,28 @@ const AuthenticationController = require('./controllers/authentication'),
 const REQUIRE_ADMIN = "Admin",  
       REQUIRE_OWNER = "Owner",
       REQUIRE_CLIENT = "Client",
-      REQUIRE_MEMBER = "Member";
-
-// Middleware to require login/auth
-const requireAuth = passport.authenticate('jwt', { session: false });  
-const requireLogin = passport.authenticate('local', { session: false });        
+      REQUIRE_MEMBER = "Member";       
 
 module.exports = function(app) {  
     // Initializing route groups
     const apiRoutes = express.Router(),
           authRoutes = express.Router(),
           coinRoutes = express.Router();
-    
 
+    // Middleware to require login/auth. We use localStrategy with passport.authenticate('local')
+    // so we use our strategy imported in 'passportService' above.
+    // Passing callback function with 'err', 'user' & 'info' returned from localStrategy login
+    // so we can return the necessary info to user to notify errors.
+
+    const requireAuth = passport.authenticate('jwt', { session: false });  
+    const requireLogin = function(req, res, next) {
+      passport.authenticate('local', function(err, user, info) {
+        if (err) { return res.status(500).json({ error: err }); }
+        if (!user) { return res.status(401).json({ error: info.error }); }
+        next();
+      })(req, res, next);
+    }
+    
     // route middleware to verify a token
     const verifyToken = (req, res, next) => {
       // check header or url parameters or post parameters for token   
@@ -66,6 +75,6 @@ module.exports = function(app) {
     // Get user coins
     coinRoutes.post('/getCoinsUser', CoinsController.getCoinsUser);
   
-  // Set url for API group routes
+    // Set url for API group routes
     app.use('/api', apiRoutes);
 };
