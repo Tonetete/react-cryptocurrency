@@ -6,6 +6,7 @@ const express = require('express'),
       mongoose = require('mongoose'),
       config = require('./config/main'),
       router = require('./router'),
+      passport = require('passport'),
       cookieParser = require('cookie-parser');
 
       // Database Connection
@@ -16,7 +17,10 @@ console.log('Your server is running on port ', config.port, ' .');
 
 app.set('superSecret', config.secret); // secret variable
 // Setting up basic middleware for all Express requests
-app.use(logger('dev')); // Log requests to API using morgan
+// Log requests to API using morgan
+app.use(logger('dev')); 
+// Initialize passport for use
+app.use(passport.initialize());
 // parse urlencoded bodies to JSON 
 app.use(bodyParser.urlencoded({ extended: false }));  
 // expose the object in req.body when we start building endpoints.
@@ -38,7 +42,6 @@ app.use(function(req, res, next) {
   //move on
     next();
   }
-  // next();
 });
 
 router(app);
