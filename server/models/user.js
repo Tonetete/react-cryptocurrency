@@ -36,19 +36,21 @@ const UserSchema = new Schema({
 UserSchema.pre('save', function(next) {  
     const user = this,
           SALT_FACTOR = 5;
-  
-    if (!user.isModified('password')) return next();
-  
-    bcrypt.genSalt(SALT_FACTOR, function(err, salt) {
-      if (err) return next(err);
-  
-      bcrypt.hash(user.password, salt, null, function(err, hash) {
-        if (err) return next(err);
-        user.password = hash;
-        next();
+    
+    if(user.isModified('password') || user.isNew) {
+      bcrypt.genSalt(SALT_FACTOR, function(err, salt) {
+        if(err) {
+          return next(err);
+        }
+        bcrypt.hash(user.password, salt, null, function(err, hash) {
+          user.password = hash;
+          next();
+        });
       });
-    });
-  });
+    } else {
+      return next();
+    }
+});
 
  // Method to compare password for login
 UserSchema.methods.comparePassword = function(candidatePassword, cb) {  
