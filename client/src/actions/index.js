@@ -17,7 +17,7 @@ import { AUTH_USER,
 const API_URL = 'http://localhost:3000/api'
 const CLIENT_ROOT_URL = 'http://localhost:5000'
 
-export function errorHandler (dispatch, error, type) {
+export function errorHandler (dispatch, error, type, logoutUser = null) {
   let errorMessage = ''
 
   if (error.data.error) {
@@ -31,10 +31,11 @@ export function errorHandler (dispatch, error, type) {
   if (error.status === 401 || error.status === 403) {
     dispatch({
       type: type,
-      payload: 'You are not authorized to do this. Please login and try again.'
+      payload: errorMessage
     })
-    const logout = logoutUser()
-    logout(dispatch)
+    if (logoutUser) {
+      logoutUser(dispatch)
+    }
   } else {
     dispatch({
       type: type,
@@ -60,7 +61,7 @@ export function loginUser ({ email, password }) {
         window.location.href = CLIENT_ROOT_URL + '/home'
       })
       .catch((error) => {
-        errorHandler(dispatch, error.response, AUTH_ERROR)
+        errorHandler(dispatch, error.response, AUTH_ERROR, false)
       })
   }
 }
@@ -131,7 +132,7 @@ export function getCoinsUser () {
         })
       })
       .catch((error) => {
-        errorHandler(dispatch, error.response, AUTH_ERROR)
+        errorHandler(dispatch, error.response, AUTH_ERROR, logoutUser())
       })
   }
 }
