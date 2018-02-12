@@ -12,7 +12,8 @@ Steps:
 ### CLIENT
 
 Steps:
-* `yarn build` to build project & `yarn start` to launch project
+* `yarn build` to build project
+* `yarn start` to launch project
 
 ### SERVER
 
@@ -33,9 +34,17 @@ Steps:
 
 ### COMMON
 
+* Adding a criptocurrency flow
+
 ### CLIENT
 
-* Adding timeout for the database connection fails 
+* Styles
+
+#### LOGIN
+* Error control
+    * Adding timeout for the database connection fails    
+
+####  
 
 ### SERVER
 
