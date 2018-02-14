@@ -28,6 +28,7 @@ module.exports = function(app) {
       passport.authenticate('local', function(err, user, info) {
         if (err) { return res.status(500).json({ error: err }); }
         if (!user) { return res.status(401).json({ error: info.error }); }
+        req.user = user;
         next();
       })(req, res, next);
     }
@@ -71,7 +72,7 @@ module.exports = function(app) {
 
     // Set coin routes
     apiRoutes.use('/coins', coinRoutes);
-    coinRoutes.use(verifyToken)
+    coinRoutes.use(verifyToken);
     // Get user coins
     coinRoutes.post('/getCoinsUser', CoinsController.getCoinsUser);
   
