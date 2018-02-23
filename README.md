@@ -50,3 +50,8 @@ Steps:
 
 ### SERVER
 
+
+### Resources
+[1] Authenticate a Node.js API with JSON Web Tokens - https://scotch.io/tutorials/authenticate-a-node-js-api-with-json-web-tokens#conclusion
+[2] Building a React/Redux App with JSON Web Token (JWT) Authentication - http://blog.slatepeak.com/build-a-react-redux-app-with-json-web-token-jwt-authentication/
+[3] Refactoring a Basic, Authenticated API with Node, Express, and Mongo - http://blog.slatepeak.com/refactoring-a-basic-authenticated-api-with-node-express-and-mongo/
