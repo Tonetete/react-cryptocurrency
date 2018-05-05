@@ -67,7 +67,6 @@ export function loginUser ({ email, password }) {
 }
 
 export function registerUserRequest ({ email, password, firstName, lastName }) {
-  console.log('submit form')
   return {
     type: REGISTER_USER_REQUEST,
     payload: { email, password, firstName, lastName }
@@ -77,7 +76,6 @@ export function registerUserRequest ({ email, password, firstName, lastName }) {
 export function registerUser$ ({ email, password, firstName, lastName }) {
   return Observable
     .fromPromise(axios.post(`${API_URL}/auth/register`, { email, password, firstName, lastName }))
-    .catch(error => Observable.of(`Error: ${error}`))
 }
 
 export function registerUserSuccess (user) {
@@ -138,7 +136,7 @@ export function getCoinsUser () {
 }
 
 export function setTotalBenefit (totalBenefit, dispatch) {
-  // selectBook is an ActionCreator, it needs to return an action,
+  // setTotalBenefit is an ActionCreator, it needs to return an action,
   // an object with a type property.
   dispatch({
     type: SET_TOTAL_BENEFIT,
