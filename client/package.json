@@ -33,12 +33,13 @@
     "semantic-ui-css": "^2.2.12",
     "semantic-ui-react": "^0.77.1",
     "semantic-ui-redux-form-fields": "^1.0.1",
+    "styled-components": "^3.2.6",
     "transform-runtime": "0.0.0"
   },
   "devDependencies": {
     "@neutrinojs/jest": "^8.0.14",
     "@neutrinojs/react": "^8.0.14",
-    "@neutrinojs/standardjs": "^8.0.14",
+    "@neutrinojs/standardjs": "^8.2.3",
     "neutrino": "^8.0.14",
     "redux-devtools-extension": "^2.13.2"
   },

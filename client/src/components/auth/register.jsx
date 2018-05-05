@@ -1,9 +1,17 @@
 import React, { Component } from 'react'
-import { Button, Form, Modal, Message } from 'semantic-ui-react'
+import styled from 'styled-components'
+import { Button, Form, Modal, Message, Label } from 'semantic-ui-react'
 import { reduxForm, Field } from 'redux-form'
 import { connect } from 'react-redux'
 import { Input } from 'semantic-ui-redux-form-fields'
 import { registerUserRequest } from '../../actions'
+
+const LabelForm = styled(Label)`
+&&& {
+  text-transform: capitalize;
+  border: 0;
+}
+`
 
 const form = reduxForm({
   form: 'register',
@@ -46,19 +54,25 @@ function validate (formProps) {
   return errors
 }
 
-const renderField = ({ input, label, type, meta: { touched, error } }) => (
-  <div>
-    <label>{label}</label>
+const renderField = ({ input, label, type, placeholder, meta: { touched, error } }) => {
+  console.log('input', input)
+  console.log('label', label)
+  console.log('type', type)
+  console.log('touched error', touched, error)
+  return (
     <div>
-      <input {...input} placeholder={label} type={type} />
-      {touched && error &&
-      <Message negative>
-        <Message.Header>Error</Message.Header>
-        <p>{error}</p>
-      </Message>}
+      <LabelForm basic>{label}</LabelForm>
+      <div>
+        <input {...input} placeholder={placeholder} type={type} />
+        {touched && error &&
+        <Message negative>
+          <Message.Header>Error</Message.Header>
+          <p>{error}</p>
+        </Message>}
+      </div>
     </div>
-  </div>
-)
+  )
+}
 
 class Register extends Component {
   constructor (props) {
@@ -103,6 +117,7 @@ class Register extends Component {
                 currentValue={currentValue}
                 type='email'
                 name='email'
+                label='email'
                 placeholder='Insert email here'
                 topLabel='Email'
               />
