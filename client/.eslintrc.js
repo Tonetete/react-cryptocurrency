@@ -3,7 +3,9 @@ module.exports = {
   "plugins": ["prettier"],
   "parser": "babel-eslint",
   "rules": {
-    "prettier/prettier": "error"
+    "prettier/prettier": ["error", {
+      "singleQuote": true
+    }]
   }
 };
 
