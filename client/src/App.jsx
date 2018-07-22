@@ -1,45 +1,54 @@
-import { Component } from 'react'
-import { connect } from 'react-redux'
-import CoinList from './components/CoinList/coin_list'
-import Register from './components/auth/register'
-import { logoutUser } from './actions/index'
-import { Button } from 'semantic-ui-react'
-import './App.css'
+import { Component } from 'react';
+import { connect } from 'react-redux';
+import CoinList from './components/CoinList/coin_list';
+import Register from './components/auth/register';
+import { logoutUser } from './actions/index';
+import { Button } from 'semantic-ui-react';
+import './App.css';
 
 class App extends Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
       name: 'react-cryptocurrencies'
-    }
+    };
   }
 
-  render () {
-    let totalBenefit = null
+  render() {
+    let totalBenefit = null;
 
     if (this.props.totalBenefitUSD !== {}) {
-      totalBenefit = <h3>Total benefit {this.props.totalBenefitUSD}$ ({this.props.totalBenefitEUR}€)</h3>
+      totalBenefit = (
+        <h3>
+          Total benefit {this.props.totalBenefitUSD}$ ({
+            this.props.totalBenefitEUR
+          }€)
+        </h3>
+      );
     }
 
-    const buttonRegister = <Button>Register</Button>
+    const buttonRegister = <Button>Register</Button>;
 
     return (
-      <div className='App'>
+      <div className="App">
         <h1>Welcome to {this.state.name}</h1>
         <CoinList />
         {totalBenefit}
         <a onClick={() => this.props.logoutUser()}>Logout User</a>
         <Register buttonRegister={buttonRegister} />
       </div>
-    )
+    );
   }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     totalBenefitUSD: state.totalBenefit.totalBenefitUSD,
     totalBenefitEUR: state.totalBenefit.totalBenefitEUR
-  }
+  };
 }
 
-export default connect(mapStateToProps, { logoutUser })(App)
+export default connect(
+  mapStateToProps,
+  { logoutUser }
+)(App);

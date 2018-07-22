@@ -1,7 +1,7 @@
 // State argument is not application state, only the State
 // that reducer is responsible for
 
-import { GET_COINS_USER } from '../actions/types'
+import { GET_COINS_USER } from '../actions/types';
 
 export const coinsUserReducer = (state = {}, action) => {
   switch (action.type) {
@@ -9,8 +9,8 @@ export const coinsUserReducer = (state = {}, action) => {
       return {
         ...state,
         coins: action.payload
-      }
+      };
     default:
-      return state
+      return state;
   }
-}
+};
