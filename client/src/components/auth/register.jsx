@@ -1,23 +1,23 @@
-import React, { Component } from 'react'
-import styled from 'styled-components'
-import { Button, Form, Modal, Message, Label } from 'semantic-ui-react'
-import { reduxForm, Field } from 'redux-form'
-import { connect } from 'react-redux'
-import { Input } from 'semantic-ui-redux-form-fields'
-import { registerUserRequest } from '../../actions'
+import React, { Component } from 'react';
+import styled from 'styled-components';
+import { Button, Form, Modal, Message, Label } from 'semantic-ui-react';
+import { reduxForm, Field } from 'redux-form';
+import { connect } from 'react-redux';
+import { Input } from 'semantic-ui-redux-form-fields';
+import { registerUserRequest } from '../../actions';
 
 const LabelForm = styled(Label)`
-&&& {
-  text-transform: capitalize;
-  border: 0;
-}
-`
+  &&& {
+    text-transform: capitalize;
+    border: 0;
+  }
+`;
 
 const form = reduxForm({
   form: 'register',
   validate,
   touchOnBlur: false
-})
+});
 
 // const renderField = field => (
 //   <div>
@@ -26,24 +26,24 @@ const form = reduxForm({
 //   </div>
 // )
 
-function validate (formProps) {
-  console.log('formProps', formProps)
-  const errors = {}
+function validate(formProps) {
+  console.log('formProps', formProps);
+  const errors = {};
 
   if (!formProps.firstName) {
-    errors.firstName = 'Name not supplied'
+    errors.firstName = 'Name not supplied';
   }
 
   if (!formProps.lastName) {
-    errors.lastName = 'Last Name not supplied'
+    errors.lastName = 'Last Name not supplied';
   }
 
   if (!formProps.email) {
-    errors.email = 'Email not supplied'
+    errors.email = 'Email not supplied';
   }
 
   if (!formProps.password) {
-    errors.password = 'Password not supplied'
+    errors.password = 'Password not supplied';
   }
 
   // if (Object.keys(errors).length > 0) {
@@ -51,49 +51,59 @@ function validate (formProps) {
   //     ...errors
   //   })
   // }
-  return errors
+  return errors;
 }
 
-const renderField = ({ input, label, type, placeholder, meta: { touched, error } }) => {
-  console.log('input', input)
-  console.log('label', label)
-  console.log('type', type)
-  console.log('touched error', touched, error)
+const renderField = ({
+  input,
+  label,
+  type,
+  placeholder,
+  meta: { touched, error }
+}) => {
+  console.log('input', input);
+  console.log('label', label);
+  console.log('type', type);
+  console.log('touched error', touched, error);
   return (
     <div>
       <LabelForm basic>{label}</LabelForm>
       <div>
         <input {...input} placeholder={placeholder} type={type} />
-        {touched && error &&
-        <Message negative>
-          <Message.Header>Error</Message.Header>
-          <p>{error}</p>
-        </Message>}
+        {touched &&
+          error && (
+            <Message negative>
+              <Message.Header>Error</Message.Header>
+              <p>{error}</p>
+            </Message>
+          )}
       </div>
     </div>
-  )
-}
+  );
+};
 
 class Register extends Component {
-  constructor (props) {
-    super(props)
+  constructor(props) {
+    super(props);
     this.state = {
       errors: {}
-    }
-    this.buttonRegister = props.buttonRegister
+    };
+    this.buttonRegister = props.buttonRegister;
   }
 
-  handleFormSubmit (formProps) {
-    this.props.registerUserRequest(formProps)
+  handleFormSubmit(formProps) {
+    this.props.registerUserRequest(formProps);
   }
 
-  renderAlert () {
+  renderAlert() {
     if (this.props.errorMessage) {
       return (
         <div>
-          <span><strong>Error!</strong> {this.props.errorMessage}</span>
+          <span>
+            <strong>Error!</strong> {this.props.errorMessage}
+          </span>
         </div>
-      )
+      );
     }
   }
 
@@ -103,8 +113,8 @@ class Register extends Component {
   //   </div>
   // )
 
-  render () {
-    const { handleSubmit, currentValue, pristine, submitting } = this.props
+  render() {
+    const { handleSubmit, currentValue, pristine, submitting } = this.props;
 
     return (
       <div>
@@ -115,40 +125,42 @@ class Register extends Component {
               <Field
                 component={renderField}
                 currentValue={currentValue}
-                type='email'
-                name='email'
-                label='email'
-                placeholder='Insert email here'
-                topLabel='Email'
+                type="email"
+                name="email"
+                label="email"
+                placeholder="Insert email here"
+                topLabel="Email"
               />
               <Field
                 component={Input}
                 currentValue={currentValue}
-                name='firstName'
-                placeholder='Insert first name here'
-                topLabel='First Name'
+                name="firstName"
+                placeholder="Insert first name here"
+                topLabel="First Name"
               />
               <Field
                 component={Input}
                 currentValue={currentValue}
-                name='lastName'
-                placeholder='Insert last name name here'
-                topLabel='Last Name'
+                name="lastName"
+                placeholder="Insert last name name here"
+                topLabel="Last Name"
               />
               <Field
                 component={renderField}
-                type='password'
-                required='true'
-                name='password'
-                label='password'
-                placeholder='Insert password here'
+                type="password"
+                required="true"
+                name="password"
+                label="password"
+                placeholder="Insert password here"
               />
-              <Button type='submit' disabled={pristine || submitting}>Submit</Button>
+              <Button type="submit" disabled={pristine || submitting}>
+                Submit
+              </Button>
             </Form>
           </Modal.Content>
         </Modal>
       </div>
-    )
+    );
 
     // return (
     //   <form onSubmit={handleSubmit(this.handleFormSubmit.bind(this))}>
@@ -177,11 +189,11 @@ class Register extends Component {
   }
 }
 
-function mapStateToProps (state) {
+function mapStateToProps(state) {
   return {
     errorMessage: state.auth.error,
     message: state.auth.message
-  }
+  };
 }
 
 // function mapDispatchToProps () {
@@ -190,4 +202,7 @@ function mapStateToProps (state) {
 //   }
 // }
 
-export default connect(mapStateToProps, { registerUserRequest })(form(Register))
+export default connect(
+  mapStateToProps,
+  { registerUserRequest }
+)(form(Register));
