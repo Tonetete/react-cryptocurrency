@@ -5,10 +5,10 @@
   "author": "Tone <toneterivas@gmail.com>",
   "license": "MIT",
   "scripts": {
-    "build": "neutrino build",
+    "build": "webpack --bail --progress --profile",
     "test": "neutrino test",
     "lint:js": "eslint --ext .js --ext .jsx src",
-    "start:dev": "webpack-dev-server",
+    "start:dev": "webpack-dev-server --progress --inline --watch --hot --history-api-fallback",
     "prettier-watch": "onchange 'src/**/*.js' 'test/**/*.js' -- prettier --write {{changed}}"
   },
   "dependencies": {

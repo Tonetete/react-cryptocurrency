@@ -1,8 +1,10 @@
 module.exports = {
-  "extends": ["plugin:prettier/recommended"],
+  "extends": ["eslint:recommended", "plugin:prettier/recommended"],
   "plugins": ["prettier"],
   "parser": "babel-eslint",
   "rules": {
+    "no-undef": 0,
+    "no-console": ["warn", { allow: ["warn"] }],
     "prettier/prettier": ["error", {
       "singleQuote": true
     }]
