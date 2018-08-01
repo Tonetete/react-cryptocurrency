@@ -1,18 +1,26 @@
-import { Component } from 'react';
+// @flow
+import * as React from 'react';
 import { Table } from 'react-bootstrap';
 import { getCoinsUser } from '../../actions/index';
 import { sortByRankCoins } from '../../functions/utils';
 import { connect } from 'react-redux';
 // import ReactInterval from 'react-interval'
 
-class CoinList extends Component {
+type Props = {
+  coinsUser: Array<string>,
+  getCoinsUser: () => {}
+};
+
+type State = {};
+
+class CoinList extends React.Component<Props, State> {
   constructor(props) {
     super(props);
     this.state = { ...props };
     this.props.getCoinsUser();
   }
 
-  buildListCoins(coins) {
+  buildListCoins(): React.Node {
     const list = sortByRankCoins(this.props.coinsUser).map(coin => {
       return (
         <tr key={coin.id}>
@@ -22,7 +30,8 @@ class CoinList extends Component {
           </td>
           <td className="col-md-2">{coin.market_cap_usd}$</td>
           <td className="col-md-2">
-            {coin.price_usd}$ ({coin.price_eur})€
+            {coin.price_usd}$ ({coin.price_eur}
+            )€
           </td>
           <td className="col-md-2">{coin['24h_volume_usd']}$</td>
           <td className="col-md-2">{coin.available_supply}$</td>
@@ -34,7 +43,8 @@ class CoinList extends Component {
           </td>
           <td className="col-md-2">{coin.quantity}</td>
           <td className="col-md-2">
-            {coin.usdValue}$ ({coin.eurValue}€)
+            {coin.usdValue}$ ({coin.eurValue}
+            €)
           </td>
         </tr>
       );
@@ -43,7 +53,7 @@ class CoinList extends Component {
     return list;
   }
 
-  render() {
+  render(): React.Node {
     if (!this.props.coinsUser) {
       return <div>Loading...</div>;
     }
@@ -73,12 +83,15 @@ class CoinList extends Component {
   }
 }
 
-function mapStateToProps(state) {
-  return {
-    coinsUser: state.coinsUser.coins
-  };
-}
+const mapStateToProps = state => ({
+  coinsUser: state.coinsUser.coins
+});
+
+const mapDispatchToProps = dispatch => ({
+  getCoinsUser: () => dispatch(getCoinsUser())
+});
+
 export default connect(
   mapStateToProps,
-  { getCoinsUser }
+  mapDispatchToProps
 )(CoinList);

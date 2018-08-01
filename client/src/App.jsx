@@ -20,9 +20,9 @@ class App extends Component {
     if (this.props.totalBenefitUSD !== {}) {
       totalBenefit = (
         <h3>
-          Total benefit {this.props.totalBenefitUSD}$ ({
-            this.props.totalBenefitEUR
-          }€)
+          Total benefit {this.props.totalBenefitUSD}$ (
+          {this.props.totalBenefitEUR}
+          €)
         </h3>
       );
     }
