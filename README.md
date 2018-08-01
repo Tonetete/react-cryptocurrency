@@ -14,8 +14,15 @@ Steps:
 ##### CLIENT
 
 Steps:
-- `yarn build` to build project
-- `yarn start` to launch project
+- ~~`yarn build` to build project~~
+- ~~`yarn start` to launch project~~
+- `npm install` to install dependencies.
+- `npm run start:dev` to launch app in develop environment.
+
+Other commands:
+
+- `npm run flow:watch` to check error types in live.
+- `npm run build` to build project
 
 ##### SERVER
 
@@ -36,7 +43,7 @@ Steps:
 
 ### COMMON
 
-- [ ] Adding a criptocurrency flow
+- [ x] Adding a criptocurrency flow
 
 ### CLIENT
 
